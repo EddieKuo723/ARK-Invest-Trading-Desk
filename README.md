@@ -1,6 +1,7 @@
 # ARK Trading Desk
-Record all purchases and sales made by [ARK Invest](https://ark-funds.com/subscribe) via [Telegram Channel](https://core.telegram.org/bots/api)
+[![Actions Status](https://github.com/EddieKuo723/ARK-Invest-Trading-Desk/workflows/Deploy_Get_ARK_Email.yml/badge.svg)](https://github.com/EddieKuo723/ARK-Invest-Trading-Desk/actions)
 
+Record all purchases and sales made by [ARK Invest](https://ark-funds.com/subscribe) via [Telegram Channel](https://core.telegram.org/bots/api)
 Deployed through AWS Lambda: https://t.me/ARK_Trading_Desk
 
 ## Architecture
@@ -26,13 +27,13 @@ Deployed through AWS Lambda: https://t.me/ARK_Trading_Desk
 
 ## Deploy
 
-GitHub Action for deploying Lambda code to create and update function:
+GitHub Action for deploying Lambda code to create or update function:
 
 ### Input 
 See [Deploy_Get_ARK_Email.yml](/.github/workflows/Deploy_Get_ARK_Email.yml) for more detailed information.
 * function-name: Get_ARK_Email
 
-#### Github Action Secrets 
+### Github Action Secrets 
 * AWS_ACCESS_KEY_ID - AWS Access Key Id
 * AWS_SECRET_ACCESS_KEY - AWS Secret Key
 * AWS_DEPLOY_IAM_ARN - AWS IAM Setting
