@@ -1,5 +1,7 @@
 # ARK Trading Desk
-[![Actions Status](https://github.com/EddieKuo723/ARK-Invest-Trading-Desk/workflows/Deploy_Get_ARK_Email.yml/badge.svg)](https://github.com/EddieKuo723/ARK-Invest-Trading-Desk/actions)
+[![Actions Status](https://github.com/EddieKuo723/ARK-Invest-Trading-Desk/workflows/deploy-py-lambda/badge.svg)](https://github.com/EddieKuo723/ARK-Invest-Trading-Desk/actions)
+[![GitHub license](https://img.shields.io/github/license/EddieKuo723/ARK-Invest-Trading-Desk.svg)](https://github.com/EddieKuo723/ARK-Invest-Trading-Desk/blob/master/LICENSE)
+
 
 Record all purchases and sales made by [ARK Invest](https://ark-funds.com/subscribe) via [Telegram Channel](https://core.telegram.org/bots/api)
 Deployed through AWS Lambda: https://t.me/ARK_Trading_Desk
