@@ -3,7 +3,8 @@
 [![GitHub license](https://img.shields.io/github/license/EddieKuo723/ARK-Invest-Trading-Desk.svg)](https://github.com/EddieKuo723/ARK-Invest-Trading-Desk/blob/master/LICENSE)
 
 
-Record all purchases and sales made by [ARK Invest](https://ark-funds.com/subscribe) via [Telegram Channel](https://core.telegram.org/bots/api)
+Broadcast all purchases and sales made by [ARK Invest](https://ark-funds.com/subscribe) via [Telegram Channel](https://core.telegram.org/bots/api)
+<br>
 Deployed through AWS Lambda: https://t.me/ARK_Trading_Desk
 
 ## Architecture
