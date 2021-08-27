@@ -9,49 +9,42 @@ import os
 
 
 def handle(text):
-    soup = BeautifulSoup(text,'html.parser')
-    header = True
-    sellbuy = []
-    
-    for tag in soup.find_all('tr'):
-        if header:
-            header = False
-            continue
-    
-        item = []
-        for td in tag.find_all('td'):
-            item.append(td.getText())
-            
-        if len(item) < 9:
-            continue
-        sellbuy.append(item)
-    
+    soup = BeautifulSoup(text,'html.parser')    
     output = {}    
     name_set = {}
     sticker = []
     batch_list = []
     
-    # move[1]: ARK ETF NAME
-    # move[3]: SELL OR BUY
-    # move[4]: Symbol (eg. AAPL)
-    # move[5]: CUSIP
-    # move[6]: Company Name
-    for move in sellbuy:
-        us_ticker = move[4].replace('.US','',1)
-        if move[1] not in output:
-            output[move[1]] = {}
-            
-        if move[3] not in output[move[1]]:
-            output[move[1]][move[3]] = [us_ticker]
+    for tag in soup.find_all('table', attrs={'style':'font-family:Arial; line-height:18px; width:100%;'} ):   
+        target_tag = tag.parent
+        break
+    
+    fund_name = ''
+    
+    for tr in target_tag.find_all('tr'):
+        item = []
+        for td in tr.find_all('td'):
+            item.append(td.getText())    
+    
+        if len(item) == 2:
+            fund_name = item[0].split(' view')[0]
+            continue
+        
+        if item[0] == 'Direction':
+            continue
+        
+        us_ticker = item[1].replace('.US','',1)    
+        if fund_name not in output:
+            output[fund_name] = {}
+    
+        if item[0] not in output[fund_name]:
+            output[fund_name][item[0]] = [us_ticker]
         else:
-            output[move[1]][move[3]].append(us_ticker)
-        
-        sub = move[6].replace('\n',' ')
+            output[fund_name][item[0]].append(us_ticker)
+            
+        sub = item[2].replace('\n',' ')   
+        sub = sub.replace('\r',' ')   
         name_set[us_ticker] = sub.title()
-        
-        if us_ticker not in sticker:
-            sticker.append(us_ticker)
-        
     
     return output,name_set
     
