@@ -39,7 +39,7 @@ See [Deploy_Get_ARK_Email.yml](/.github/workflows/Deploy_Get_ARK_Email.yml) for 
 ### Github Action Secrets 
 * AWS_ACCESS_KEY_ID - AWS Access Key Id
 * AWS_SECRET_ACCESS_KEY - AWS Secret Key
-* AWS_DEPLOY_IAM_ARN - AWS IAM Setting
+* AWS_DEPLOY_IAM_ARN - [AWS Lambda IAM Role](/IAM_Config)
 * LAMBDA_VARIABLE - Lambda Functions Environment Variable
 
 ## Example
