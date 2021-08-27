@@ -21,9 +21,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-northeast-1
 
+    - name: change directory
+      run: |
+        cd ${{ env.function-name }}
+
     - name: zip function code
       run: |
-        zip -r ${{ env.function-name }}.zip ${{ env.function-name }} -x \*.git\* 
+        zip -r ${{ env.function-name }}.zip * -x \*.git\* 
 
     - name: check if function exists
       run: |
