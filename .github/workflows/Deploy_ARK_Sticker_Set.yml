@@ -23,7 +23,8 @@ jobs:
 
     - name: zip function code
       run: |
-        zip -r ${{ env.function-name }}.zip ${{ env.function-name }} -x \*.git\* 
+        cd ${{ env.function-name }}
+        zip -r ../${{ env.function-name }}.zip ${{ env.function-name }} -x \*.git\* 
 
     - name: check if function exists
       run: |
