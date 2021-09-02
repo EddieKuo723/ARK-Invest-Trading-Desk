@@ -24,7 +24,7 @@ jobs:
     - name: zip function code
       run: |
         cd ${{ env.function-name }}
-        zip -r ../${{ env.function-name }}.zip ${{ env.function-name }} -x \*.git\* 
+        zip -r ../${{ env.function-name }}.zip * -x \*.git\* 
 
     - name: check if function exists
       run: |
