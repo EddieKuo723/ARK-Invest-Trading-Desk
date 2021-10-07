@@ -39,15 +39,15 @@ def holding_graph(ark):
     new_price   = []
     new_tickers = []
     new_ticker_set = {}
-    ark_domain = 'https://ark-funds.com/wp-content/fundsiteliterature/csv/'
+    ark_domain = 'https://ark-funds.com/wp-content/uploads/funds-etf-csv/'
     
     ark_link = {
         "ARKK":"ARK_INNOVATION_ETF_ARKK_HOLDINGS.csv",
-        "ARKQ":"ARK_AUTONOMOUS_TECHNOLOGY_&_ROBOTICS_ETF_ARKQ_HOLDINGS.csv",
-        "ARKW":"ARK_NEXT_GENERATION_INTERNET_ETF_ARKW_HOLDINGS.csv",
-        "ARKG":"ARK_GENOMIC_REVOLUTION_MULTISECTOR_ETF_ARKG_HOLDINGS.csv",
-        "ARKF":"ARK_FINTECH_INNOVATION_ETF_ARKF_HOLDINGS.csv",
-        "ARKX":"ARK_SPACE_EXPLORATION_&_INNOVATION_ETF_ARKX_HOLDINGS.csv"
+        "ARKQ":"ARK_INNOVATION_ETF_ARKQ_HOLDINGS.csv",
+        "ARKW":"ARK_INNOVATION_ETF_ARKW_HOLDINGS.csv",
+        "ARKG":"ARK_INNOVATION_ETF_ARKG_HOLDINGS.csv",
+        "ARKF":"ARK_INNOVATION_ETF_ARKF_HOLDINGS.csv",
+        "ARKX":"ARK_INNOVATION_ETF_ARKX_HOLDINGS.csv"
     }
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45'}
 
@@ -65,22 +65,22 @@ def holding_graph(ark):
                 pass
                 try:
                     if row[3] in ticker_set:
-                        if float(row[-1]) >= float(ticker_set[row[3]]):
+                        if float(row[-1][:-1]) >= float(ticker_set[row[3]]):
                             # new ratio
-                            high_prices.append(float(row[-1])-float(ticker_set[row[3]]))
+                            high_prices.append(float(row[-1][:-1])-float(ticker_set[row[3]]))
                             low_prices.append(0)
                             new_price.append(float(ticker_set[row[3]]))
                             new_tickers.append(row[3])
                         else:
                             high_prices.append(0)
-                            low_prices.append(float(ticker_set[row[3]])-float(row[-1]))
-                            new_price.append(float(row[-1]))
+                            low_prices.append(float(ticker_set[row[3]])-float(row[-1][:-1]))
+                            new_price.append(float(row[-1][:-1]))
                             new_tickers.append(row[3])  
         
                     else:
                         high_prices.append(0)
                         low_prices.append(0)
-                        new_price.append(float(row[-1]))
+                        new_price.append(float(row[-1][:-1]))
                         new_tickers.append(row[3])  
                 except Exception as e:
                     print(e)
@@ -89,7 +89,7 @@ def holding_graph(ark):
             if row[0] == '':
                 break
             # print(row)
-            new_ticker_set[row[3]] = float(row[-1])     
+            new_ticker_set[row[3]] = float(row[-1][:-1])     
     
     new_ticker_set.pop('', None)
     data = json.loads(json.dumps(new_ticker_set), parse_float=Decimal)
