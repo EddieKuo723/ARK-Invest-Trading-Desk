@@ -52,8 +52,10 @@ def get_credentials():
     return credentials
 
 def lambda_handler(event, context):
+    with open('/tmp/token.json', 'w') as token:
+        token.write(os.environ['token_json'])
 
-    credentials = get_credentials()
+    credentials = Credentials.from_authorized_user_file('/tmp/token.json', SCOPES)
 
     service = build('gmail', 'v1', credentials=credentials)
 
