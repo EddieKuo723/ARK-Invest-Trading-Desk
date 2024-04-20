@@ -42,13 +42,13 @@ def holding_graph(ark):
     ark_domain = 'https://ark-funds.com/wp-content/uploads/funds-etf-csv/'
     
     ark_link = {
-        "ARKK":"ARK_INNOVATION_ETF_ARKK_HOLDINGS.csv",
-        "ARKQ":"ARK_INNOVATION_ETF_ARKQ_HOLDINGS.csv",
-        "ARKW":"ARK_INNOVATION_ETF_ARKW_HOLDINGS.csv",
-        "ARKG":"ARK_INNOVATION_ETF_ARKG_HOLDINGS.csv",
-        "ARKF":"ARK_INNOVATION_ETF_ARKF_HOLDINGS.csv",
-        "ARKX":"ARK_INNOVATION_ETF_ARKX_HOLDINGS.csv"
-    }
+		"ARKK":"ARK_INNOVATION_ETF_ARKK_HOLDINGS.csv",
+		"ARKQ":"ARK_AUTONOMOUS_TECH._&_ROBOTICS_ETF_ARKQ_HOLDINGS.csv",
+		"ARKW":"ARK_NEXT_GENERATION_INTERNET_ETF_ARKW_HOLDINGS.csv",
+		"ARKG":"ARK_GENOMIC_REVOLUTION_ETF_ARKG_HOLDINGS.csv",
+		"ARKF":"ARK_FINTECH_INNOVATION_ETF_ARKF_HOLDINGS.csv",
+		"ARKX":"ARK_SPACE_EXPLORATION_&_INNOVATION_ETF_ARKX_HOLDINGS.csv"
+	}
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Safari/537.36 Edg/89.0.774.45'}
 
     csvdata = requests.get(f'{ark_domain}{ark_link[ark]}', headers=headers)

@@ -10,6 +10,8 @@ from boto3.dynamodb.conditions import Key, Attr
 from botocore.exceptions import ClientError
 import json
 import telegram
+from telegram import InputSticker
+from telegram.request import HTTPXRequest
 from PIL import Image
 from io import BytesIO
 import asyncio
@@ -21,10 +23,11 @@ bot_id  = os.environ['BOT_ID']
 chat_id = os.environ['CHAT_ID']
 img_url = os.environ['IMG_URL']
 
-bot = telegram.Bot(token=bot_id)
+trequest = HTTPXRequest(connection_pool_size=20)
+bot = telegram.Bot(token=bot_id,request=trequest)
 
 
-def new_sticker_set(sticker_id):
+async def new_sticker_set(sticker_id):
     url = 'http://seekvectorlogo.com/wp-content/uploads/2019/10/ark-invest-etfs-vector-logo.png'
     web_im = requests.get(url).content
     
@@ -43,7 +46,7 @@ def new_sticker_set(sticker_id):
     im_resize.save(filename)
     
     try:
-        bot.create_new_sticker_set(
+        await bot.create_new_sticker_set(
             chat_id
             , f'{sticker_id}_by_Anson_bot'
             , f'{sticker_id} Trading Desk'
@@ -91,13 +94,13 @@ async def reSize(ticker,sticker_id,act):
     else:
         emoji = '📉'
     
-    bot.add_sticker_to_set(
-            chat_id
-            , f'{sticker_id}_by_Anson_bot'
-            , open(filename,'rb')
-            , emoji
-            , timeout=20
-        )
+    sticker = await bot.upload_sticker_file(
+        user_id = chat_id,
+        sticker = open(filename, 'rb'),
+        sticker_format = "static"
+    )
+	sticker_dict = InputSticker(sticker.file_id,(emoji),'static' )
+	await bot.add_sticker_to_set(chat_id, line_id+'_by_Anson_bot', sticker_dict)
     
 
     # print('done')
@@ -105,14 +108,8 @@ async def reSize(ticker,sticker_id,act):
 
 
     
-def main(sticker_id,ticker_list):   
+async def main(sticker_id,ticker_list):   
     # https://github.com/Sea-n/LINE-stickers/blob/master/index.js
-    asyncio.set_event_loop(asyncio.new_event_loop())
-    
-    tasks = []
-    loop = asyncio.get_event_loop()
-    task = loop.create_task(reSize(sticker_id,sticker_id,'Buy'))
-    tasks.append(task)
         
     for act in ticker_list:
         # ticker = SQ
@@ -120,57 +117,59 @@ def main(sticker_id,ticker_list):
         # act = sell or buy
         
         for ticker in ticker_list[act]:
-            task = loop.create_task(reSize(ticker,sticker_id,act))
-            tasks.append(task)
-    
-    if tasks:
-        loop.run_until_complete(asyncio.wait(tasks))
-        loop.close()        
-        sticker_line = f"https://t.me/addstickers/{sticker_id}_by_Anson_bot"
+            await reSize(ticker,sticker_id,act)
         
     top_holding.holding_graph(sticker_id)
-    bot.add_sticker_to_set(
-            chat_id
-            , f'{sticker_id}_by_Anson_bot'
-            , open(f'/tmp/{sticker_id}_chart.png','rb')
-            , '📈'
-            , timeout=20
-        )
+    filename = f'/tmp/{sticker_id}_chart.png'
+	sticker = await bot.upload_sticker_file(
+        user_id = chat_id, 
+        sticker = open(filename, 'rb'), 
+        sticker_format = "static"
+    )
+	sticker_dict = InputSticker(sticker.file_id,('📈'),'static' )
+	await bot.add_sticker_to_set(chat_id, sticker_id+'_by_Anson_bot', sticker_dict)
 
-def get_old(sticker_id):
+async def get_old(sticker_id):
     try:
-        sets = bot.get_sticker_set(name=f'{sticker_id}_by_Anson_bot')
+        sets = await bot.get_sticker_set(name=f'{sticker_id}_by_Anson_bot')
     except Exception as e:
         return False        
     
     return sets
     
 
-def clear_old(sticker_list):
+async def clear_old(sticker_list):
     # Keep logo and delete others
     sticker_list = sticker_list['stickers'][1:]
     for stick in sticker_list:
-        result = bot.delete_sticker_from_set(stick['file_id'])
+        result = await bot.delete_sticker_from_set(stick['file_id'])
     pass
 
+async def asyncio_main(event):
+	# TODO implement
+	sticker_id = event['sticker_id'] 
+	sticker_list = event['sticker_list']
+	
+	print(json.dumps(event))
+	old_list = await get_old(sticker_id)
+	print(old_list)
+	if not old_list:
+		await new_sticker_set(sticker_id)
+	else:
+		print('clear')
+		await clear_old(old_list)
+	
+	await main(sticker_id,sticker_list)
 
 def lambda_handler(event, context):
-    sticker_id = event['sticker_id'] 
-    sticker_list = event['sticker_list']
-    
-    if not sticker_id:
-        return {'statusCode': 400}
-
-    old_list = get_old(sticker_id)
-    if not old_list:
-        new_sticker_set(sticker_id)
-    else:
-        clear_old(old_list)
-
-    main(sticker_id,sticker_list)
-    
-    return {
-        'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
-    }
+    if 'sticker_id' not in event:
+		return {'statusCode': 400}
+	
+	asyncio.run(asyncio_main(event))
+	
+	
+	return {
+		'statusCode': 200,
+		'body': json.dumps('Hello from Lambda!')
+	}
 
