@@ -3,9 +3,9 @@
 [![GitHub license](https://img.shields.io/github/license/EddieKuo723/ARK-Invest-Trading-Desk.svg)](https://github.com/EddieKuo723/ARK-Invest-Trading-Desk/blob/master/LICENSE)
 
 
-Broadcast all purchases and sales made by [ARK Invest](https://ark-funds.com/subscribe) via [Telegram Channel](https://core.telegram.org/bots/api)
-<br>
-Deployed through AWS Lambda: https://t.me/ARK_Trading_Desk
+### Introduction:
+
+The **ARK Invest Trade Broadcast** project offers a streamlined solution for tracking and disseminating all purchase and sale transactions executed by [ARK Invest](https://ark-funds.com/subscribe). Leveraging the power of Telegram, this project automatically broadcasts real-time updates of ARK Invest's trading activities to a designated Telegram channel.
 
 ## Architecture
 <p align="center">
@@ -30,7 +30,7 @@ Deployed through AWS Lambda: https://t.me/ARK_Trading_Desk
 
 ## Deploy
 
-GitHub Action for deploying Lambda code to create or update function:
+We've streamlined the deployment process with GitHub Actions. By using our GitHub Action, you can easily deploy Lambda code to update functions.
 
 ### Input 
 See [Deploy_Get_ARK_Email.yml](/.github/workflows/Deploy_Get_ARK_Email.yml) for more detailed information.
@@ -60,7 +60,7 @@ Huya Inc
 
 ## AWS Policy
 
-Add the following AWS policy if you want to integrate with GitHub Actions. Please change `REGION`, `ACCOUNT` and `LAMBDA_NAME` variable to your specfic data.
+To integrate with GitHub Actions, add the following AWS policy. Please replace REGION, ACCOUNT, and LAMBDA_NAME with your specific data.
 
 ```json
 {
@@ -86,3 +86,7 @@ Add the following AWS policy if you want to integrate with GitHub Actions. Pleas
 
 This project is released under the MIT license.
 For more details, take a look at the [LICENSE](LICENSE) file.
+
+### Disclaimer:
+
+This project is not affiliated with ARK Invest. It is an independent initiative developed to enhance transparency and accessibility for investors interested in tracking ARK Invest's trading activities.
